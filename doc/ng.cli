@@ -1,0 +1,179 @@
+Cmd prompt and goes to D:\project\airelogic\BugTrackerAPI\ui
+
+// Check angular version
+ng version
+
+// ng new {projectname} <-- Create new project of angular
+ng new bugtracker
+ng add @angular/material
+
+npm install --save @angular/material @angular/cdk @angular/animations
+npm install @ngneat/until-destroy
+
+// prompt to ask angular routing? Y
+// Keep the default style
+// cd [projectname] folder and launch visual studio code
+code .
+
+// Back to cmd prompt to test angular is properly installed
+ng serve --open
+
+// Back to visual studio code
+// Folder structure as follow:
+// src/index.html <-- This is the landing page of angular
+// inside html body, there is a custom html tag name <app-root>
+//  which refer to app/app.component.ts, there is a @component-->selector:'app-root' matched
+//  according to app.component.html, this is the html content of web page
+//  according to app.component.css which is the style sheet of app.component.html file
+// package.json is the file to record package and files are being used.
+// angular.json is the file to record testing and serving. 
+// app.module.ts contains all the modules information.
+
+// Cmd prompt and goes to D:\project\airelogic\BugTrackerAPI\ui
+// Using angular to generate components
+ng generate component ticket
+
+// create child component for show
+ng generate component ticket/list-ticket
+
+// create child component for add or edit
+ng generate component ticket/add-edit-ticket
+
+ng generate component user
+
+// create child component for show
+ng generate component user/list-user
+
+// create child component for add or edit
+ng generate component user/add-edit-user
+
+ng generate component dashboard
+
+ng generate component dashboard/list-dashboard
+
+ng generate component priority
+
+ng generate component priority/list-priority
+
+ng generate component priority/add-edit-priority
+
+ng generate component status
+
+ng generate component status/list-status
+
+ng generate component status/add-edit-status
+
+ng generate component followup
+
+ng generate component followup/list-followup
+
+ng generate component followup/add-edit-followup
+
+ng generate component login
+
+ng generate component setup
+
+npm i @auth0/angular-jwt
+
+ng g interceptor interceptors/auth
+
+ng g interceptor interceptors/error
+
+ng g guard guards\auth
+
+npm install --save buffer
+
+// then create the service file
+ng generate service shared
+
+// Open file app.module.ts and insert the created service name.
+import {SharedService} from './shared.service';
+
+// At NgModule provider Input the service name
+@NgModule ({
+	providers: [SharedService]
+})
+
+// Back to file app.module.ts and insert the httpclient under the imported service.
+import {HttpClientModule} from '@angular/common/http';
+import {FormsModule,ReactiveFormsModule} from '@angular/forms';
+
+@NgModule ({
+	// .. under AppRoutingModule
+	HttpClientModule,
+	FormsModule,
+	ReactiveFormsModule
+})
+
+// Edit shared.service.ts
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+
+// under @Injectable ({})
+export class SharedService {
+readonly APIUrl="http://localhost:4200/api";
+readonly AttachmentUrl="http://localhost:4200/Attachment"
+
+constructor(private http:HttpClient) { }
+
+  getTicketList():Observable<any[]>{
+    return this.http.get<any>(this.APIUrl+'/ticket');
+  }
+
+  addTicket(val:any){
+    return this.http.post(this.APIUrl+'/ticket',val);
+  }
+
+  updateTicket(val:any){
+    return this.http.put(this.APIUrl+'/ticket',val);
+  }
+
+  deleteTicket(val:any){
+    return this.http.delete(this.APIUrl+'/ticket/'+val);
+  }
+
+  getUserList():Observable<any[]>{
+    return this.http.get<any>(this.APIUrl+'/user');
+  }
+
+  addUser(val:any){
+    return this.http.post(this.APIUrl+'/user',val);
+  }
+
+  updateUser(val:any){
+    return this.http.put(this.APIUrl+'/user',val);
+  }
+
+  deleteUser(val:any){
+    return this.http.delete(this.APIUrl+'/user/'+val);
+  }
+
+  uploadAttachment(val:any){
+    return this.http.post(this.APIUrl+'/ticket/SaveAttachment',val);
+  }
+
+  getAllStatusNames():Observable<any[]>{
+    return this.http.get<any[]>(this.APIUrl+'/ticket/GetAllStatusNames');
+  }
+  
+  getAllPriorityNames():Observable<any[]>{
+    return this.http.get<any[]>(this.APIUrl+'/ticket/GetAllPriorityNames');
+  }
+ }
+
+// Edit app.routing.module.ts file and add the below lines
+import {TicketComponent} from './ticket/ticket.component';
+import {UserComponent} from './user/user.component';
+
+const routes: Routes = [
+{path:'ticket',component:TicketComponent},
+{path:'user',component:UserComponent}
+];
+
+
+
+// Edit app.component.html and insert a tag inside <div class="container"></div>
+<router-outlet></router-outlet>
+
+// install Bootstrap for angular
+ng add @ng-bootstrap/ng-bootstrap
